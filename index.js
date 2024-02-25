@@ -3,3 +3,12 @@ let movieDataURL = 'https://cdn.freecodecamp.org/testable-projects-fcc/data/tree
 let movieData;
 
 let canvas = d3.select('#canvas');
+
+d3.json(movieDataURL).then((data, error) => {
+	if (error) {
+		console.log(error);
+	} else {
+		movieData = data;
+		console.log(movieData);
+	}
+});
