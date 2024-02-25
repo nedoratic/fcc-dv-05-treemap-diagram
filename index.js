@@ -49,7 +49,7 @@ let drawTreeMap = (data) => {
 			} else if (category === 'Drama') {
 				return '#FED6A5';
 			} else if (category === 'Family') {
-				return '#BDB1FE';
+				return '#C3E6FE';
 			}
 		})
 		.attr('data-name', (movie) => movie.data.name)
@@ -70,6 +70,26 @@ let drawTreeMap = (data) => {
 		.style('overflow-wrap', 'break-word')
 		.style('text-align', 'left')
 		.html((movie) => movie.data.name);
+
+	block
+		.on('mouseover', (event, movie) => {
+			const tooltip = d3.select('#tooltip');
+			const revenue = movie.data.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+			tooltip
+				.style('display', 'block')
+				.style('left', event.pageX + 'px')
+				.style('top', event.pageY + 'px')
+				.html(`<strong>${movie.data.name}</strong><br>Category: ${movie.data.category}<br>Revenue: $ ${revenue}`)
+				.attr('data-value', movie.data.value);
+		})
+		.on('mousemove', (event) => {
+			const tooltip = d3.select('#tooltip');
+			tooltip.style('left', event.pageX + 'px').style('top', event.pageY + 'px');
+		})
+		.on('mouseout', () => {
+			const tooltip = d3.select('#tooltip');
+			tooltip.style('display', 'none');
+		});
 };
 
 d3.json(movieDataURL).then((data, error) => {
